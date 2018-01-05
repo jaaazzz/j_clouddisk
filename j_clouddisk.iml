@@ -90,7 +90,7 @@
     <orderEntry type="library" name="Maven: org.apache.struts:struts2-spring-plugin:2.1.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.mybatis:mybatis-spring:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.oracle:ojdbc6:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.oracle:ojdbc6" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.0.14" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: com.alibaba:jconsole:1.8.0">
