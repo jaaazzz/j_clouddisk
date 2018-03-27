@@ -6,8 +6,64 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+
+
+    <!-- 1.配置要扫描的包 -->
     <context:component-scan base-package="com.jaz.dao,com.jaz.service"></context:component-scan>
     <context:property-placeholder location="classpath:db.properties"/>
+    <!--2.配置CacheManager实例：管理Shiro相关缓存操作  -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"></property>
+    </bean>
+
+    <!--3.配置realm实例，实际的认证和授权都是由Realm实例来完成的！  -->
+    <bean id="myRealm" class="com.jaz.realm.myRealm"></bean>
+
+    <!-- 4.配置 SecurityManager 实例. SecurityManager 是 Shiro 最核心的组件 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <!--5.配置bean的后置处理器来自动调用Shiro中的bean的init和destroy方法。  -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
+
+
+    <!--6.配置使shiro注解起作用的bean，需要放在 lifecycleBeanPostProcessor后面 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"></bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"></property>
+    </bean>
+
+    <!--
+        7.配置哪些页面需要被拦截，以及访问这些页面所需的权限 。
+        该bean中的id 属性值必须和 web.xml 文件中配置的 filter 的 filter-name 值一致
+    -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"></property>
+
+        <!--①配置登陆页面  -->
+        <property name="loginUrl" value="/requestin.action"></property>
+        <property name="successUrl" value="/index.jsp"></property>
+        <property name="unauthorizedUrl" value="/unauthorize.jsp"></property>
+        <!--②配置需要被拦截的资源 以及访问权限 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- anon: 表示匿名的, 即任何人都可以访问 -->
+                /login.jsp=anon
+                /login=anon
+                /logout=logout
+
+                <!--③设置访问具体资源的权限  -->
+                /admin.jsp=roles[admin]
+                /user.jsp=roles[user]
+
+                <!-- authc 表示必须经过认证之后才可以访问的页面 -->
+                /**=authc
+            </value>
+        </property>
+    </bean>
+
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driver}" />
