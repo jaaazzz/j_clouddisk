@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,7 +9,15 @@
 </head>
 <body>
   <div>
-       <a href="${pageContext.request.contextPath}/requestin.action" >log in</a>  &nbsp;
+      <c:choose>
+          <c:when test="${user_name!=null}">
+              <a href="" >${user_name}</a>  &nbsp;
+          </c:when>
+          <c:otherwise>
+              <a href="${pageContext.request.contextPath}/requestin.action" >log in</a>  &nbsp;
+          </c:otherwise>
+      </c:choose>
+
        <a href="${pageContext.request.contextPath}/requestup.action" >log up</a>  &nbsp;
        <a href="${pageContext.request.contextPath}/autologin.action?user_name=${user_name}" >我的主页</a>&nbsp;
        <a href="${pageContext.request.contextPath}/help.jsp">帮助</a> 
