@@ -83,16 +83,16 @@ public class UploadAction extends ActionSupport implements Serializable{
 			 return SUCCESS;
 		
 		//从数据库查询该用户是否为vip 
-		Integer isvip = null;
-		try {
-			isvip = userService.isVip(user_name);
-			//把是否是vip的信息带到userhome主页，用于在客户端限制文件上传大小
-			ServletActionContext.getRequest().setAttribute("isvip", isvip);
-		} catch (Exception e) {
-			e.printStackTrace();
-			ServletActionContext.getRequest().setAttribute("message", "未知错误，请重试");
-			return SUCCESS;
-		}  
+//		Integer isvip = null;
+//		try {
+//			isvip = userService.isVip(user_name);
+//			//把是否是vip的信息带到userhome主页，用于在客户端限制文件上传大小
+//			ServletActionContext.getRequest().setAttribute("isvip", isvip);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			ServletActionContext.getRequest().setAttribute("message", "未知错误，请重试");
+//			return SUCCESS;
+//		}
 		
 		File store = null;  //目的文件
 	   	try{
@@ -105,7 +105,7 @@ public class UploadAction extends ActionSupport implements Serializable{
 	   	
 	   	long size = this.file.length() ;  //上传文件的大小
 	   	
-		if(SUCCESS.equals(checkFile(store, storePath, isvip, size)))//检查文件大小等是否符合要求
+		if(SUCCESS.equals(checkFile(store, storePath, size)))//检查文件大小等是否符合要求
 			return SUCCESS; //有问题 转发回用户空间页面显示原因
 		
 			
@@ -140,7 +140,7 @@ public class UploadAction extends ActionSupport implements Serializable{
 		}
 	}
 
-    private String checkFile(File store , String storePath , int isvip , long size){
+    private String checkFile(File store , String storePath  , long size){
  
     		
 		if(store.exists()){
@@ -151,10 +151,10 @@ public class UploadAction extends ActionSupport implements Serializable{
 		if( size == 0 ){
 			ServletActionContext.getRequest().setAttribute("message", "文件大小不能为0");
 			return SUCCESS;
-		}else if(isvip == 0 && size > normallimit){
+		}else if(size > normallimit){
 			ServletActionContext.getRequest().setAttribute("message", "普通用户最大只能上传"+normallimit/factor+"Mb的文件");
 			return SUCCESS;
-		}else if(isvip == 1 && size > viplimit){
+		}else if( size > viplimit){
 			ServletActionContext.getRequest().setAttribute("message", "VIP用户最大只能上传"+viplimit/factor+"Mb的文件");
 			return SUCCESS;
 		}else  return "OK";

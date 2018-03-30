@@ -7,9 +7,12 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class User  {
 	private int id;
+	private int group_id;
 	private String password;
 	private String username;
-	private int isvip;
+	private String salt;
+	private String role_id;
+	private int locked;
 	
 	public int getId() {
 		return id;
@@ -29,11 +32,31 @@ public class User  {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getIsvip() {
-		return isvip;
+	public String getSalt() {
+		return salt;
 	}
-	public void setIsvip(int isvip) {
-		this.isvip = isvip;
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
-	
+	public String getRoleId() {
+		return role_id;
+	}
+	public void setRoleId(String role_id) {
+		this.role_id = role_id;
+	}
+	public int getIslocked() {
+		return locked;
+	}
+	public void setIslocked(int locked) {
+		this.locked = locked;
+	}
+	public int getGroupId() {
+		return group_id;
+	}
+	public void setGroupId(int group_id) {
+		this.group_id = group_id;
+	}
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
 }

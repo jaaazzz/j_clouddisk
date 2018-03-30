@@ -23,22 +23,22 @@ public class UserDao {
 		return user_name;
 	}
 	//查找指定用户名的用户是否存在
-	public boolean findUser(String username)throws Exception{
+	public User findUser(String username)throws Exception{
 		SqlSession session = DaoUtil.getSqlSession();
 		UserMapper mapper = session.getMapper(UserMapper.class);
-		Integer found = mapper.findUser(username);
+		User user = mapper.findUser(username);
 		session.close();
-		if(found==null || found<1)  return false;
-		return true;
+		if(user==null)  return null;
+		return user;
 	}
-	public int isVip(String user_name) throws Exception{
-		SqlSession session = DaoUtil.getSqlSession();
-		UserMapper mapper = session.getMapper(UserMapper.class);
-		Integer isvip = mapper.isVip(user_name);
-		session.close();
-		if(isvip==null || isvip == 0)  return 0;
-		else return 1;
-	
-	}
+//	public int isVip(String user_name) throws Exception{
+//		SqlSession session = DaoUtil.getSqlSession();
+//		UserMapper mapper = session.getMapper(UserMapper.class);
+//		Integer isvip = mapper.isVip(user_name);
+//		session.close();
+//		if(isvip==null || isvip == 0)  return 0;
+//		else return 1;
+//
+	//}
 	
 }

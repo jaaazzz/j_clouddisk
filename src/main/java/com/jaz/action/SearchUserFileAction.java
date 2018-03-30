@@ -82,11 +82,11 @@ public class SearchUserFileAction extends ActionSupport implements Serializable{
 			e.printStackTrace();
 			return INPUT;
 		} 
-		Integer isvip = (Integer) ServletActionContext.getRequest().getAttribute("isvip");
-		if(isvip==null){  //没有上传文件之前会调用到这里的代码，上传的时候在uploadAction里会添加isvip
-		   isvip = userService.isVip(this.filepath);
-           ServletActionContext.getRequest().setAttribute("isvip", isvip);   
-		}
+//		Integer isvip = (Integer) ServletActionContext.getRequest().getAttribute("isvip");
+//		if(isvip==null){  //没有上传文件之前会调用到这里的代码，上传的时候在uploadAction里会添加isvip
+//		   isvip = userService.isVip(this.filepath);
+//           ServletActionContext.getRequest().setAttribute("isvip", isvip);
+//		}
 		//拿到每页的数据，每个元素就是一条记录
 		pageBean.setList(list);
 		pageBean.setCurrentpage(currentpage);

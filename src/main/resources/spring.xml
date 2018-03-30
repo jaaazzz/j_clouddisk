@@ -17,7 +17,16 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </bean>
 
     <!--3.配置realm实例，实际的认证和授权都是由Realm实例来完成的！  -->
-    <bean id="myRealm" class="com.jaz.realm.myRealm"></bean>
+    <bean id="myRealm" class="com.jaz.realm.myRealm">
+        <!--将凭证匹配器设置到realm中，realm按照凭证匹配器要求进行散列-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5" />
+        <property name="hashIterations" value="1" />
+    </bean>
 
     <!-- 4.配置 SecurityManager 实例. SecurityManager 是 Shiro 最核心的组件 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -43,13 +52,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <property name="securityManager" ref="securityManager"></property>
 
         <!--①配置登陆页面  -->
-        <property name="loginUrl" value="/requestin.action"></property>
+        <property name="loginUrl" value="/login.action"></property>
         <property name="successUrl" value="/index.jsp"></property>
         <property name="unauthorizedUrl" value="/unauthorize.jsp"></property>
         <!--②配置需要被拦截的资源 以及访问权限 -->
         <property name="filterChainDefinitions">
             <value>
                 <!-- anon: 表示匿名的, 即任何人都可以访问 -->
+                /requestin.action=anon
+                /requestup.action=anon
+                /logup.action=anon
+                /login.action=anon
                 /login.jsp=anon
                 /login=anon
                 /logout=logout

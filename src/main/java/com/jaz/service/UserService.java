@@ -13,8 +13,8 @@ public class UserService {
 	private UserMapper dao;
 
 	public void createUser(User user) throws Exception{
-		Boolean found = findUser(user.getUsername());
-		if(!found)
+		User real_user = findUser(user.getUsername());
+		if(real_user == null)
 		   dao.createUser(user);
 		else
 			throw new RuntimeException();
@@ -24,13 +24,13 @@ public class UserService {
 		return dao.checkUser(user);
 	}
 	
-	public boolean findUser(String username) throws Exception{
-		Integer found = dao.findUser(username);
-		if(found==null || found<1)  return false;
-		return true;
+	public User findUser(String username) throws Exception{
+		User found = dao.findUser(username);
+		if(found==null)  return null;
+		return found;
 	}
 
-	public int isVip(String user_name)throws Exception {
-		return dao.isVip(user_name);
-	}
+//	public int isVip(String user_name)throws Exception {
+//		return dao.isVip(user_name);
+//	}
 }

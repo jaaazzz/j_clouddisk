@@ -8,19 +8,19 @@
         SELECT user.username FROM user WHERE username=#{username} AND password=#{password}
      </select>
      
-     <select id="findUser" parameterType="java.lang.String" resultType="java.lang.Integer" >
-        SELECT user.id FROM user WHERE username=#{username}
+     <select id="findUser" parameterType="java.lang.String" resultType="com.jaz.dao.po.User" >
+        SELECT * FROM user WHERE username=#{username}
      </select>
      
-     <select id="isVip" parameterType="java.lang.String" resultType="int">
-        SELECT isvip FROM user WHERE username=#{value}
-     </select>
+     <!--<select id="isVip" parameterType="java.lang.String" resultType="int">-->
+        <!--SELECT isvip FROM user WHERE username=#{value}-->
+     <!--</select>-->
  
      <insert id="createUser" parameterType="com.jaz.dao.po.User" >
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
-		INSERT INTO user(username,password,isvip) VALUES(#{username},#{password},#{isvip})
+		INSERT INTO user(username,password,salt) VALUES(#{username},#{password},#{salt})
      </insert>
      
  </mapper>

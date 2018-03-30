@@ -13,6 +13,12 @@ import com.jaz.service.UserService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import org.apache.shiro.crypto.hash.AbstractHash;
+import org.apache.shiro.crypto.hash.Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.SimpleByteSource;
+import java.util.UUID;
+
 public class LogupAction extends ActionSupport implements Serializable{
 
 	private String username;
@@ -65,7 +71,15 @@ public class LogupAction extends ActionSupport implements Serializable{
 	public String logup(){
 		
 		user.setUsername(username);
+		String salt = UUID.randomUUID().toString();
+		user.setSalt(salt);
+		//Hash hash=new SimpleHash("MD5", new SimpleByteSource(password),new SimpleByteSource(salt),1);
+		//Hash hash=new SimpleHash("MD5", password,new SimpleByteSource("www"),1);
+		//password = hash.toHex();
+        Hash hash=new SimpleHash("MD5", password,salt,1);
+        password = hash.toString();
 		user.setPassword(password);
+
 		try {
 			service.createUser(user); //如果用户已注册 下层的service会抛出异常
 			//注册成功，就在upload下分配一个私人的文件夹

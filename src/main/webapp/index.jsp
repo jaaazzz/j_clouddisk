@@ -12,13 +12,14 @@
       <c:choose>
           <c:when test="${user_name!=null}">
               <a href="" >${user_name}</a>  &nbsp;
+              <a href="${pageContext.request.contextPath}/requestout.action" >log out</a> &nbsp;
           </c:when>
           <c:otherwise>
               <a href="${pageContext.request.contextPath}/requestin.action" >log in</a>  &nbsp;
+              <a href="${pageContext.request.contextPath}/requestup.action" >log up</a>  &nbsp;
           </c:otherwise>
       </c:choose>
 
-       <a href="${pageContext.request.contextPath}/requestup.action" >log up</a>  &nbsp;
        <a href="${pageContext.request.contextPath}/autologin.action?user_name=${user_name}" >我的主页</a>&nbsp;
        <a href="${pageContext.request.contextPath}/help.jsp">帮助</a> 
   </div> 
